@@ -1,7 +1,7 @@
 inputElem = document.querySelector('#inputElem')
-allComp = document.querySelector('.all ul')
-activeComp = document.querySelector('.active ul')
-completedComp = document.querySelector('.completed ul')
+allComp = document.querySelector('.all ')
+activeComp = document.querySelector('.active')
+completedComp = document.querySelector('.completed')
 countSpan = document.querySelector('.count p span')
 let count = 0
 countSpan.innerContent = `${count} items left`
@@ -36,6 +36,7 @@ function createListItemAndAppend(Tasks, listText){
         if(Tasks === allComp){
             createListItemAndAppend(completedComp, listItem.innerText)
         }
+
         
     })
 
@@ -64,6 +65,7 @@ function createListItemAndAppend(Tasks, listText){
     divElem.append(tickImage)
     divElem.append(binImage)
     divElem.append(editImage)
+ 
 }
 
 inputElem.addEventListener('keypress',(event)=>{
@@ -86,22 +88,37 @@ completedTab = document.querySelector('.status .status-btn .completed-btn')
 allTab.addEventListener('click', ()=>{
     console.log('All Tab Clicked')
     allComp.classList.remove('hidden')
-    activeComp.classList.add('hidden')
-    completedComp.classList.add('hidden')
+    if(activeComp.className !== "hidden"){
+           activeComp.classList.add('hidden')
+    }
+    if(completedComp.className !== "hidden"){
+        completedComp.classList.add('hidden')
+    }
+    
 })
 
 activeTab.addEventListener('click', ()=>{
     console.log('Active Tab Clicked')
     activeComp.classList.remove('hidden')
-    allComp.classList.add('hidden')
-    completedComp.classList.add('hidden')
+    if(allComp.className !== "hidden"){
+           allComp.classList.add('hidden')
+    }
+    if(completedComp.className !== "hidden"){
+        completedComp.classList.add('hidden')
+    }
 })
 
 completedTab.addEventListener('click', ()=>{
     console.log('Completed Tab Clicked')
+    console.log(`Before${completedComp.className}`)
     completedComp.classList.remove('hidden')
-    allComp.classList.add('hidden')
-    activeComp.classList.add('hidden')
+    if(allComp.className !== "hidden"){
+           allComp.classList.add('hidden')
+    }
+    if(activeComp.className !== "hidden"){
+        activeComp.classList.add('hidden')
+    }
+    console.log(`After${completedComp.className}`)
 })
 
 
