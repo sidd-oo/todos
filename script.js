@@ -2,10 +2,12 @@ inputElem = document.querySelector('#inputElem')
 allComp = document.querySelector('.all ul')
 activeComp = document.querySelector('.active ul')
 completedComp = document.querySelector('.completed ul')
+countSpan = document.querySelector('.count p span')
+let count = 0
+countSpan.innerContent = `${count} items left`
 
-allTab = document.querySelector('.todos-display  div .all')
-activeTab = document.querySelector('.todos-display  div .active')
-completedTab = document.querySelector('.todos-display div .completed')
+console.log({allComp, activeComp, completedComp})
+console.log(completedComp)
 
 let allTask = []
 let activeTask = []
@@ -29,7 +31,13 @@ function createListItemAndAppend(Tasks, listText){
     tickImage.classList.add('tick')
     listItem.append(tickImage)
     //AddEventListen to tick
-    // tickImage.addEventListener('click',tickFunctionality)
+    tickImage.addEventListener('click',()=>{
+        console.log("Tick Clicked")
+        if(Tasks === allComp){
+            createListItemAndAppend(completedComp, listItem.innerText)
+        }
+        
+    })
 
     //bin icon
     const binImage = document.createElement('img')
@@ -38,14 +46,11 @@ function createListItemAndAppend(Tasks, listText){
     listItem.append(binImage)
     //AddEventListen to bin
     binImage.addEventListener("click",()=>{
-        console.log("Hella")
         listItem.remove()
+        count--
+        countSpan.innerText = `${count} items left`
     })
 
-    // function binFunctionality(){
-    //     console.log("Bin Function")
-    //     listItem.remove()
-    // }
 
     //Edit icon
     const editImage = document.createElement('img')
@@ -67,27 +72,42 @@ inputElem.addEventListener('keypress',(event)=>{
             //List is created and appended in task tab
             createListItemAndAppend(allComp,event.target.value)
             //reseting the last value of the input field
-            allTask.push(event.target.value)
             event.target.value = ""
+            count++
+            countSpan.innerText = `${count} items left`
         }  
     }
 })
 
-allTab.addEventListener('click',(event)=>{
-    console.log("Clicked alltab")
-    event.target.classList.remove('hidden')
-    console.log(event.target)
+allTab = document.querySelector('.status .status-btn .all-btn')
+activeTab = document.querySelector('.status .status-btn .active-btn')
+completedTab = document.querySelector('.status .status-btn .completed-btn')
+
+allTab.addEventListener('click', ()=>{
+    console.log('All Tab Clicked')
+    allComp.classList.remove('hidden')
+    activeComp.classList.add('hidden')
+    completedComp.classList.add('hidden')
 })
-activeTab.addEventListener('click',(event)=>{
-    console.log("Clicked active tab")
-    event.target.classList.remove('hidden')
-    console.log(event.target)
+
+activeTab.addEventListener('click', ()=>{
+    console.log('Active Tab Clicked')
+    activeComp.classList.remove('hidden')
+    allComp.classList.add('hidden')
+    completedComp.classList.add('hidden')
 })
-completedTab.addEventListener('click',(event)=>{
-    console.log("Clicked completed tab")
-    event.target.classList.remove('hidden')
-    console.log(event.target)
+
+completedTab.addEventListener('click', ()=>{
+    console.log('Completed Tab Clicked')
+    completedComp.classList.remove('hidden')
+    allComp.classList.add('hidden')
+    activeComp.classList.add('hidden')
 })
+
+
+
+
+
 
 
 
