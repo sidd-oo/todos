@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script async defer src="script.js"></script>
     <title>todos</title>
 </head>
@@ -15,25 +16,32 @@
             <input type="text" placeholder="What needs to be done ?" id = "inputElem">
         </section>
         <section class = "todos-display">
-            <div class = "all">
-                    
+            <div class = "all hidden">
                     <ul>
-
+                        
                     </ul>
-                <div class = "status"></div>
             </div>
-            <div class = "active">
+            <div class = "active hidden">
                      <ul>
                         
                     </ul>
-                <div class = "status"></div>
             </div>
-            <div class = "completed">
+            <div class = "completed hidden">
                      <ul>
                         
                     </ul>
-                <div class = "status"></div>
             </div>
+        </section>
+        <section class = "status">
+                <div class = "count"><p><span>0 item left</span></p></div>
+                <div class = "status-btn">
+                    <button>All</button>
+                    <button>Active</button>
+                    <button>Completed</button>
+                </div>
+                <div class="clear-btn">
+                    <button>Clear All</button>
+                </div>
         </section>
     </div>
 </body>
