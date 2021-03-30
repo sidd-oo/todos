@@ -6,9 +6,6 @@ countSpan = document.querySelector('.count p span')
 let count = 0
 countSpan.innerContent = `${count} items left`
 
-console.log({allComp, activeComp, completedComp})
-console.log(completedComp)
-
 let allTask = []
 let activeTask = []
 let completedTask = []
@@ -18,7 +15,7 @@ function createListItemAndAppend(Tasks, listText){
     const listItem = document.createElement('li');
     listItem.classList.add("listItem")
     listItem.textContent = listText
-    Tasks.append(listItem);
+    Tasks.querySelector('ul').append(listItem);
 
     //Div elem so that icons can be enclosed for better alignment/styling
     const divElem = document.createElement('div');
@@ -34,10 +31,25 @@ function createListItemAndAppend(Tasks, listText){
     tickImage.addEventListener('click',()=>{
         console.log("Tick Clicked")
         if(Tasks === allComp){
-            createListItemAndAppend(completedComp, listItem.innerText)
+            let flagAdded = false
+            completedComp.querySelector('ul').querySelectorAll('li').forEach((list)=>{
+                if(list.innerText === listItem.innerText){
+                    flagAdded = true
+                }
+            })
+            if(flagAdded === true){
+                  document.querySelector('p.warn').innerText = "This task is already in the completed todos tab."
+                  setTimeout(()=>{
+                      document.querySelector('p.warn').innerText = ""
+                  },1000)
+            }else{
+                createListItemAndAppend(completedComp, listItem.innerText)
+                document.querySelector('p.success').innerText = "Task Completed !"
+                setTimeout(()=>{
+                      document.querySelector('p.success').innerText = ""
+                  },1000)
+            }
         }
-
-        
     })
 
     //bin icon
@@ -48,8 +60,13 @@ function createListItemAndAppend(Tasks, listText){
     //AddEventListen to bin
     binImage.addEventListener("click",()=>{
         listItem.remove()
+        document.querySelector('p.warn').innerText = "Removed Successfully !"
+        setTimeout(()=>{
+            document.querySelector('p.warn').innerText = ""
+        },1000)
         count--
         countSpan.innerText = `${count} items left`
+        
     })
 
 
@@ -60,6 +77,11 @@ function createListItemAndAppend(Tasks, listText){
     listItem.append(editImage)
     //AddEventListen to edit
     // editImage.addEventListener('click',editFunctionality)
+
+    
+    //Strikethrough
+
+
 
     // Enclosing tick, bin, edit icons into a div
     divElem.append(tickImage)
@@ -73,6 +95,7 @@ inputElem.addEventListener('keypress',(event)=>{
         if(event.target.value !== ""){
             //List is created and appended in task tab
             createListItemAndAppend(allComp,event.target.value)
+            createListItemAndAppend(activeComp,event.target.value)
             //reseting the last value of the input field
             event.target.value = ""
             count++

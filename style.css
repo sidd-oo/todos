@@ -14,9 +14,27 @@ h1{
     font-weight: 500;
     color: rgb(185, 116, 185)
 }
+
+.warn{
+    color:rgb(255, 0, 0);
+    font-size: 20px;
+    font-weight: 600;
+    text-shadow: 1px 1px 10px rgb(238, 237, 237);
+    text-align: center;
+    margin:3px;
+}
+
+.success{
+    color:rgb(0, 255, 0);
+    font-size: 20px;
+    font-weight: 600;
+    text-shadow: 1px 1px 10px rgb(238, 237, 237);
+    text-align: center;
+    margin:3px;
+}
 .container{
     position:relative;
-    margin:-10px auto;
+    margin: 0px auto;
     width:40%;
     /* height:515px; */
     background-color: white;
@@ -150,7 +168,7 @@ section > input[type="text"]:focus{
 }
 
 .status-btn{
-    margin:0px 90px 0px 120px;
+    margin:0px 60px 0px 60px;
     background-color: white;
 } 
 
