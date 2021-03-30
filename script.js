@@ -80,7 +80,18 @@ function createListItemAndAppend(Tasks, listText){
 
     
     //Strikethrough
-
+    if(Tasks === allComp){
+            const overText = document.querySelectorAll('.todos-display .all ul li')
+            overText.forEach((item)=>{
+            item.addEventListener('click',(event)=>{ 
+                if(item.style.textDecoration === "line-through"){
+                    item.style.textDecoration = "none"
+                }else{
+                    item.style.textDecoration = "line-through"
+                }
+            })
+        })
+    }
 
 
     // Enclosing tick, bin, edit icons into a div

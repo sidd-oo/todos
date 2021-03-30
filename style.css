@@ -205,3 +205,7 @@ section > input[type="text"]:focus{
 .hidden{
     display:none;
 }
+
+.strike{
+    text-decoration: line-through;
+}
