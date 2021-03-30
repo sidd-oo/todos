@@ -83,11 +83,21 @@ function createListItemAndAppend(Tasks, listText){
     if(Tasks === allComp){
             const overText = document.querySelectorAll('.todos-display .all ul li')
             overText.forEach((item)=>{
-            item.addEventListener('click',(event)=>{ 
+            item.addEventListener('click',()=>{ 
                 if(item.style.textDecoration === "line-through"){
                     item.style.textDecoration = "none"
+
+                    createListItemAndAppend(activeComp,item.innerText)
                 }else{
                     item.style.textDecoration = "line-through"
+                    console.log("Strike through")
+                    const listActiveItem = document.querySelectorAll(".todos-display .active ul li")
+                    listActiveItem.forEach((i)=>{
+                        if(item.innerText === i.innerText){
+                            console.log(``)
+                            i.remove()
+                        }
+                    })
                 }
             })
         })

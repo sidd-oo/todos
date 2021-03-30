@@ -206,6 +206,3 @@ section > input[type="text"]:focus{
     display:none;
 }
 
-.strike{
-    text-decoration: line-through;
-}
