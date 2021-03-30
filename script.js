@@ -2,9 +2,9 @@ inputElem = document.querySelector('#inputElem')
 allComp = document.querySelector('.all ')
 activeComp = document.querySelector('.active')
 completedComp = document.querySelector('.completed')
+
 countSpan = document.querySelector('.count p span')
-let count = 0
-countSpan.innerContent = `${count} items left`
+countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos here`
 
 let allTask = []
 let activeTask = []
@@ -22,6 +22,15 @@ function createListItemAndAppend(Tasks, listText){
     divElem.classList.add('buttonAlign')
     listItem.append(divElem)
 
+    //Main the counts
+    if(Tasks === allComp){
+            countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos here`
+    }else if(Tasks === activeComp){
+            countSpan.innerText = `${document.querySelectorAll('.todos-display .active ul li').length} active todos`
+    }else if(Tasks === completedComp){
+            countSpan.innerText = `${document.querySelectorAll('.todos-display .completed ul li').length} todos done`   
+    }
+
     //tick icon
     const tickImage = document.createElement('img')
     tickImage.src = "/images/tick.png"
@@ -32,18 +41,24 @@ function createListItemAndAppend(Tasks, listText){
         console.log("Tick Clicked")
         if(Tasks === allComp){
             let flagAdded = false
-            completedComp.querySelector('ul').querySelectorAll('li').forEach((list)=>{
+            //Searching whether it exists or not in completed tab
+            completedComp.querySelectorAll('ul li').forEach((list)=>{
                 if(list.innerText === listItem.innerText){
+                    //Mark truem, if exists
                     flagAdded = true
                 }
             })
+
             if(flagAdded === true){
+                // Exists, prompt a warning
                   document.querySelector('p.warn').innerText = "This task is already in the completed todos tab."
                   setTimeout(()=>{
                       document.querySelector('p.warn').innerText = ""
                   },1000)
             }else{
+                //Not Exist, add and promt a success message and change count 
                 createListItemAndAppend(completedComp, listItem.innerText)
+                countSpan.innerText = `${document.querySelectorAll('.todos-display .completed ul li').length} todos done`
                 document.querySelector('p.success').innerText = "Task Completed !"
                 setTimeout(()=>{
                       document.querySelector('p.success').innerText = ""
@@ -64,8 +79,15 @@ function createListItemAndAppend(Tasks, listText){
         setTimeout(()=>{
             document.querySelector('p.warn').innerText = ""
         },1000)
-        count--
-        countSpan.innerText = `${count} items left`
+
+        //Count lists present
+        if(Tasks === allComp){
+            countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos here`
+        }else if(Tasks === activeComp){
+            countSpan.innerText = `${document.querySelectorAll('.todos-display .active ul li').length} active todos`
+        }else if(Tasks === completedComp){
+            countSpan.innerText = `${document.querySelectorAll('.todos-display .completed ul li').length} todos done`   
+        }
         
     })
 
@@ -111,6 +133,7 @@ function createListItemAndAppend(Tasks, listText){
  
 }
 
+//Driver function
 inputElem.addEventListener('keypress',(event)=>{
     if(event.key == "Enter"){
         if(event.target.value !== ""){
@@ -119,18 +142,19 @@ inputElem.addEventListener('keypress',(event)=>{
             createListItemAndAppend(activeComp,event.target.value)
             //reseting the last value of the input field
             event.target.value = ""
-            count++
-            countSpan.innerText = `${count} items left`
         }  
     }
 })
 
+
+//Tab buttons - All, Active, Completed
 allTab = document.querySelector('.status .status-btn .all-btn')
 activeTab = document.querySelector('.status .status-btn .active-btn')
 completedTab = document.querySelector('.status .status-btn .completed-btn')
 
 allTab.addEventListener('click', ()=>{
     console.log('All Tab Clicked')
+    countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos here`
     allComp.classList.remove('hidden')
     if(activeComp.className !== "hidden"){
            activeComp.classList.add('hidden')
@@ -143,6 +167,7 @@ allTab.addEventListener('click', ()=>{
 
 activeTab.addEventListener('click', ()=>{
     console.log('Active Tab Clicked')
+    countSpan.innerText = `${document.querySelectorAll('.todos-display .active ul li').length} active todos`
     activeComp.classList.remove('hidden')
     if(allComp.className !== "hidden"){
            allComp.classList.add('hidden')
@@ -154,7 +179,7 @@ activeTab.addEventListener('click', ()=>{
 
 completedTab.addEventListener('click', ()=>{
     console.log('Completed Tab Clicked')
-    console.log(`Before${completedComp.className}`)
+    countSpan.innerText = `${document.querySelectorAll('.todos-display .completed ul li').length} todos done`
     completedComp.classList.remove('hidden')
     if(allComp.className !== "hidden"){
            allComp.classList.add('hidden')
@@ -162,7 +187,6 @@ completedTab.addEventListener('click', ()=>{
     if(activeComp.className !== "hidden"){
         activeComp.classList.add('hidden')
     }
-    console.log(`After${completedComp.className}`)
 })
 
 
