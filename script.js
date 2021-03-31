@@ -13,8 +13,10 @@ let completedTask = []
 function createListItemAndAppend(Tasks, listText){
     //Creating list item to display the entered todos
     const listItem = document.createElement('li');
+    const para = document.createElement('p');
     listItem.classList.add("listItem")
-    listItem.textContent = listText
+    para.textContent = listText
+    listItem.append(para);
     Tasks.querySelector('ul').append(listItem);
 
     //Div elem so that icons can be enclosed for better alignment/styling
@@ -51,10 +53,10 @@ function createListItemAndAppend(Tasks, listText){
 
             if(flagAdded === true){
                 // Exists, prompt a warning
-                  document.querySelector('p.warn').innerText = "This task is already in the completed todos tab."
+                  document.querySelector('p.warn').innerText = "This task is already added in the completed tab."
                   setTimeout(()=>{
                       document.querySelector('p.warn').innerText = ""
-                  },1000)
+                  },800)
             }else{
                 //Not Exist, add and promt a success message and change count 
                 createListItemAndAppend(completedComp, listItem.innerText)
@@ -62,7 +64,7 @@ function createListItemAndAppend(Tasks, listText){
                 document.querySelector('p.success').innerText = "Task Completed !"
                 setTimeout(()=>{
                       document.querySelector('p.success').innerText = ""
-                  },1000)
+                  },800)
             }
         }
     })
@@ -75,10 +77,13 @@ function createListItemAndAppend(Tasks, listText){
     //AddEventListen to bin
     binImage.addEventListener("click",()=>{
         listItem.remove()
-        document.querySelector('p.warn').innerText = "Removed Successfully !"
+
+        document.querySelector('p.success').innerText = "Removed Successfully !"
         setTimeout(()=>{
-            document.querySelector('p.warn').innerText = ""
-        },1000)
+            document.querySelector('p.success').innerText = ""
+        },800)
+
+       
 
         //Count lists present
         if(Tasks === allComp){
@@ -98,25 +103,35 @@ function createListItemAndAppend(Tasks, listText){
     editImage.classList.add('edit')
     listItem.append(editImage)
     //AddEventListen to edit
-    // editImage.addEventListener('click',editFunctionality)
+    editImage.addEventListener('click',()=>{
+        let saveTemp = listItem.innerHTML.split('</p>')
+        let newSave = ""
+        listItem.innerHTML = `<input type = "text" class = "tempInput"></input>${saveTemp[1]}`
+                document.querySelector('.tempInput').addEventListener('keypress',(event)=>{
+                    if(event.key === "Enter"){
+                        newSave = event.target.value
+                         listItem.innerHTML = `<p>${newSave}</p>${saveTemp[1]}`
+                    }
+                    
+                })
+    })
 
     
     //Strikethrough
     if(Tasks === allComp){
             const overText = document.querySelectorAll('.todos-display .all ul li')
             overText.forEach((item)=>{
-            item.addEventListener('click',()=>{ 
-                if(item.style.textDecoration === "line-through"){
-                    item.style.textDecoration = "none"
+            item.querySelector('p').addEventListener('click',()=>{ 
+                if(item.querySelector('p').style.textDecoration === "line-through"){
+                    item.querySelector('p').style.textDecoration = "none"
 
-                    createListItemAndAppend(activeComp,item.innerText)
+                    createListItemAndAppend(activeComp,item.querySelector('p').innerText)
                 }else{
-                    item.style.textDecoration = "line-through"
+                    item.querySelector('p').style.textDecoration = "line-through"
                     console.log("Strike through")
                     const listActiveItem = document.querySelectorAll(".todos-display .active ul li")
                     listActiveItem.forEach((i)=>{
-                        if(item.innerText === i.innerText){
-                            console.log(``)
+                        if(item.querySelector('p').innerText === i.innerText){
                             i.remove()
                         }
                     })
@@ -138,12 +153,19 @@ inputElem.addEventListener('keypress',(event)=>{
     if(event.key == "Enter"){
         if(event.target.value !== ""){
             //List is created and appended in task tab
-            createListItemAndAppend(allComp,event.target.value)
             createListItemAndAppend(activeComp,event.target.value)
+            createListItemAndAppend(allComp,event.target.value)
             //reseting the last value of the input field
             event.target.value = ""
         }  
     }
+
+    clearAllBtn.addEventListener('click',()=>{
+        document.querySelectorAll('.todos-display .all ul li').forEach((item)=>{
+            item.remove()
+        })
+        countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos here`
+    })
 })
 
 
@@ -151,6 +173,7 @@ inputElem.addEventListener('keypress',(event)=>{
 allTab = document.querySelector('.status .status-btn .all-btn')
 activeTab = document.querySelector('.status .status-btn .active-btn')
 completedTab = document.querySelector('.status .status-btn .completed-btn')
+clearAllBtn = document.querySelector(".clear-btn button")
 
 allTab.addEventListener('click', ()=>{
     console.log('All Tab Clicked')
@@ -162,6 +185,13 @@ allTab.addEventListener('click', ()=>{
     if(completedComp.className !== "hidden"){
         completedComp.classList.add('hidden')
     }
+
+    clearAllBtn.addEventListener('click',()=>{
+        document.querySelectorAll('.todos-display .all ul li').forEach((item)=>{
+            item.remove()
+        })
+        countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos here`
+    })
     
 })
 
@@ -175,6 +205,13 @@ activeTab.addEventListener('click', ()=>{
     if(completedComp.className !== "hidden"){
         completedComp.classList.add('hidden')
     }
+
+    clearAllBtn.addEventListener('click',()=>{
+        document.querySelectorAll('.todos-display .active ul li').forEach((item)=>{
+            item.remove()
+        })
+        countSpan.innerText = `${document.querySelectorAll('.todos-display .active ul li').length} active todos`
+    })
 })
 
 completedTab.addEventListener('click', ()=>{
@@ -187,8 +224,14 @@ completedTab.addEventListener('click', ()=>{
     if(activeComp.className !== "hidden"){
         activeComp.classList.add('hidden')
     }
-})
 
+    clearAllBtn.addEventListener('click',()=>{
+        document.querySelectorAll('.todos-display .completed ul li').forEach((item)=>{
+            item.remove()
+        })
+        countSpan.innerText = `${document.querySelectorAll('.todos-display .all ul li').length} todos done`
+    })
+})
 
 
 
